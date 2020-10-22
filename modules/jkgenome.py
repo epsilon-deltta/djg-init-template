@@ -601,7 +601,7 @@ def loadBlatOutputByID(blatOutputPath=refFlat_path):
 def loadBlatOutputByChr(blatOutputPath=refFlat_path):
 
     return loadBlatOutput(blatOutputPath, 'chrom')
-    
+
 def processBlatLine(line):
 
     tokL = line.rstrip().split('\t')
@@ -609,8 +609,8 @@ def processBlatLine(line):
     h = {}
 
     h['transName'] = tokL[0]
-    h['transID'] = tokL[1]
-    h['chrom'] = tokL[2]
+    h['transID']   = tokL[1]
+    h['chrom']  = tokL[2]
     h['chrNum'] = tokL[2][3:]
     h['strand'] = tokL[3]
     h['txnSta'] = int(tokL[4])
@@ -1013,141 +1013,6 @@ def getGenePos(refFlatFile='/data1/Sequence/ucsc_hg19/annot/refFlat.txt', geneLi
                 posH[gene_sym]['pos'] = pos
     return posH
 
-# def loadLincByChr(dataFileName='/Z/Sequence/ucsc_hg19/annot/lincRNAsTranscripts.txt',h={}):
-#
-#     for line in open(dataFileName):
-#
-#         r = processLincLine(line)
-#
-#         jkbasic.addHash(h, r['chrom'], r)
-#
-#     return h
-#
-#
-# def processLincLine(line):
-#
-#     tokL = line.rstrip().split('\t')[1:]
-#
-#     h = {}
-#
-#     h['geneId'] = tokL[0]
-#     h['chrom'] = tokL[1]
-#     h['chrNum'] = tokL[1][3:]
-#     h['strand'] = tokL[2]
-#     h['txnSta'] = int(tokL[3])
-#     h['txnEnd'] = int(tokL[4])
-#     h['txnLen'] = h['txnEnd'] - h['txnSta']
-#     h['cdsSta'] = int(tokL[5])
-#     h['cdsEnd'] = int(tokL[6])
-#     h['exnList'] = map(lambda x,y: (int(x),int(y)), tokL[8].split(',')[:-1], tokL[9].split(',')[:-1])
-#     h['exnLenList'] = [e-s for (s,e) in h['exnList']]
-#     h['exnLen'] = sum(h['exnLenList'])
-#
-#     h['cdsList'] = []
-#
-#     for (s,e) in h['exnList']:
-#
-#         if s<=h['cdsSta'] and h['cdsSta']<=e:
-#             s = h['cdsSta']
-#
-#         if s<=h['cdsEnd'] and h['cdsEnd']<=e:
-#             e = h['cdsEnd']
-#
-#         if h['cdsSta']<=s and e<=h['cdsEnd']:
-#             h['cdsList'].append((s,e))
-#
-#     h['cdsLen'] = sum([e-s for (s,e) in h['cdsList']])
-#
-#     return h
-#
-#
-# def loadKgByChr(dataFileName='/Z/Sequence/ucsc_hg19/annot/knownGene.txt',h={}):
-#
-#     for line in open(dataFileName):
-#
-#         r = processKgLine(line)
-#
-#         jkbasic.addHash(h, r['chrom'], r)
-#
-#     return h
-#
-#
-# def processKgLine(line):
-#
-#     tokL = line.rstrip().split('\t')
-#
-#     h = {}
-#
-#     h['geneId'] = tokL[0]
-#     h['chrom'] = tokL[1]
-#     h['chrNum'] = tokL[1][3:]
-#     h['strand'] = tokL[2]
-#     h['txnSta'] = int(tokL[3])
-#     h['txnEnd'] = int(tokL[4])
-#     h['txnLen'] = h['txnEnd'] - h['txnSta']
-#     h['cdsSta'] = int(tokL[5])
-#     h['cdsEnd'] = int(tokL[6])
-#     h['exnList'] = map(lambda x,y: (int(x),int(y)), tokL[8].split(',')[:-1], tokL[9].split(',')[:-1])
-#     h['exnLenList'] = [e-s for (s,e) in h['exnList']]
-#     h['exnLen'] = sum(h['exnLenList'])
-#
-#     h['cdsList'] = []
-#     frontL, backL = [],[]
-#
-#     for (s,e) in h['exnList']:
-#
-#         if e<=h['cdsSta']:
-#             frontL.append((s,e))
-#         elif s<=h['cdsSta'] and h['cdsSta']<=e:
-#             frontL.append((s,h['cdsSta']))
-#             h['cdsList'].append((h['cdsSta'],e))
-#         elif h['cdsSta']<=s and e<=h['cdsEnd']:
-#             h['cdsList'].append((s,e))
-#         elif s<=h['cdsEnd'] and h['cdsEnd']<=e:
-#             h['cdsList'].append((s,h['cdsEnd']))
-#             backL.append((h['cdsEnd'],e))
-#         elif h['cdsEnd']<=s:
-#             backL.append((s,e))
-#         else:
-#             raise Exception
-#
-#     if h['strand'] == '+':
-#         h['utr5pLen'] = sum([e-s for (s,e) in frontL])
-#     elif h['strand'] == '-':
-#         h['utr5pLen'] = sum([e-s for (s,e) in backL])
-#     else:
-#         raise Exception
-#
-#     h['cdsLen'] = sum([e-s for (s,e) in h['cdsList']])
-#
-#     if h['strand'] == '+':
-#         exnLenListH = h['exnLenList']
-#     else:
-#         exnLenListH = h['exnLenList'][::-1]
-#
-#     transOffset = h['utr5pLen'] * -1
-#     h['frame'] = []
-#
-#     # index of h['frame'] is [exon number]-1
-#
-#     for i in range(len(exnLenListH)):
-#
-#         if 0 <= transOffset < h['cdsLen']:
-#             frame5p = transOffset % 3
-#         else:
-#             frame5p = None
-#
-#         if 0 <= transOffset+exnLenListH[i]-1 < h['cdsLen']:
-#             frame3p = (transOffset+exnLenListH[i]-1) % 3
-#         else:
-#             frame3p = None
-#
-#         h['frame'].append((frame5p, frame3p))
-#
-#         transOffset += exnLenListH[i]
-#
-#     return h
-
 def loadCosmic(cosmicDat='/data1/Sequence/cosmic/cosmic.dat'):
     h = {}
 
@@ -1226,7 +1091,21 @@ def mergeLoci(locusL,gap=10):
         i = j
 
     return locusMergedL
+def split_seq(seq):
+    position = seq.split(' ')[0]
+    variant  = seq.split(' ')[1]
 
+    chrom    = position.split(':')[0]
+    pos      = position.split(':')[1]
+
+    ref      = variant.split('>')[0]
+    alt      = variant.split('>')[1]
+    return chrom , pos,ref,alt
+def spliceAI_run_str(seq="11:108236168 A>C"):
+    if seq[:3] == 'chr':
+        seq = seq[3:]
+    chrom,pos,ref,alt = split_seq(seq)
+    return spliceAI_run(chrom,pos,ref,alt)
 
 def spliceAI_run(chrom,pos,ref,alt): # hg38, pos-1; indel exam: T to TA
 
@@ -1263,7 +1142,10 @@ def spliceAI_run(chrom,pos,ref,alt): # hg38, pos-1; indel exam: T to TA
     import tempfile
 
     f = tempfile.NamedTemporaryFile()
-    f.write(vcf); f.flush()
+    if int(sys.version[:1])>= 3 :
+        f.write(vcf.encode()); f.flush()
+    else:
+        f.write(vcf); f.flush()
 
     return os.popen("cat %s | spliceai -R %s/D/Sequences/hg38/hg38.fa -A grch38" % (f.name,homedir)).readlines()
 

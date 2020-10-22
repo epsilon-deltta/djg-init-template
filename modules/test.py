@@ -2,6 +2,9 @@ import jkgenome as jk
 import os
 import time
 print("=====start")
+def spliceAI_run_str_test(seq='11:108236168 A>C'):
+    result = jk.spliceAI_run_str(seq)
+    return result
 # result = jk.spliceAI('11:108241292-108241292') #output 01
 # output ex) [{'chrN': '11', 'pos': 108236168, 'ref': 'A', 'alt': 'C', 'geneName': 'ATM', 'score': {'AG': 0.0, 'AL': 0.0, 'DG': 0.02, 'DL': 0.01}, 'relPos': {'AG': 5, 'AL': 2, 'DG': 4, 'DL': -48}} ...
 # input chr12:51391349-51391349 //it doesn't work
@@ -40,6 +43,7 @@ def convertTrans2Genome_test(transID="NM_000552",transPos=3797):
     return result
 # /HDD8/ypil/djg-api-test/modules/data/tools/tabix-0.2.6/tabix /HDD8/ypil/djg-api-test/modules/data/BigFiles/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz 11:108236168-10823616
 if __name__ == '__main__':
+    print("spliceAI_run_str result is ",spliceAI_run_str_test())
     # print(convertGenome2Trans_test )
     # print(variant_bi2_test_indel())
     # print(jk.convertTrans2Genome(jk.loadBlatOutputByID(),"NM_000552",3797) )
