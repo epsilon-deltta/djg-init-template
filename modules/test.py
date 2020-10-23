@@ -1,6 +1,8 @@
 import jkgenome as jk
 import os
 import time
+import tensorflow as tf
+#cd /home/ypil/api-test/modules python test.py
 print("=====start")
 def spliceAI_run_str_test(seq='11:108236168 A>C'):
     result = jk.spliceAI_run_str(seq)
@@ -43,7 +45,7 @@ def convertTrans2Genome_test(transID="NM_000552",transPos=3797):
     return result
 # /HDD8/ypil/djg-api-test/modules/data/tools/tabix-0.2.6/tabix /HDD8/ypil/djg-api-test/modules/data/BigFiles/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz 11:108236168-10823616
 if __name__ == '__main__':
-    print("spliceAI_run_str result is ",spliceAI_run_str_test())
+    print("spliceAI_run_str result is ",spliceAI_run_str_test() )
     # print(convertGenome2Trans_test )
     # print(variant_bi2_test_indel())
     # print(jk.convertTrans2Genome(jk.loadBlatOutputByID(),"NM_000552",3797) )

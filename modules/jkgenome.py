@@ -1142,12 +1142,12 @@ def spliceAI_run(chrom,pos,ref,alt): # hg38, pos-1; indel exam: T to TA
     import tempfile
 
     f = tempfile.NamedTemporaryFile()
-    if int(sys.version[:1])>= 3 :
+    if int(sys.version[:1]) >= 3 :
         f.write(vcf.encode()); f.flush()
     else:
         f.write(vcf); f.flush()
-
-    return os.popen("cat %s | spliceai -R %s/D/Sequences/hg38/hg38.fa -A grch38" % (f.name,homedir)).readlines()
+    print("checking")
+    return os.popen("cat %s | spliceai -R %s/D/Sequences/hg38/hg38.fa -A grch38" % (f.name,homedir) ) .readlines()
 
 
 
